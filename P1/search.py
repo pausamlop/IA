@@ -81,13 +81,37 @@ def depthFirstSearch(problem):
 
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
-
+"""
     print("Start:", problem.getStartState())
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    """
+    
     "*** YOUR CODE HERE ***"
+    
+    listaAbiertos = util.Stack()
+    listaCerrados = util.Queue()
+
+    listaAbiertos.push(problem.getStartState())
+
+    nodo = listaAbiertos.pop()
+
+    while (problem.isGoalState(nodo) is False):
+        if nodo not in listaCerrados.list:
+            listaCerrados.push(nodo)
+            listaAbiertos.push(problem.getSuccessors(nodo))
+            print(nodo)
+        
+        nodo = listaAbiertos.pop()
+    
+    listaCerrados.push(nodo)
+
+    return listaCerrados
     util.raiseNotDefined()
+    
+    
+    
+    
+  
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
