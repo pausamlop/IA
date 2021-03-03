@@ -92,32 +92,38 @@ def depthFirstSearch(problem):
     listaCerrados = []
     camino = []
 
-    listaAbiertos.push(problem.getStartState())
+    "Nodo inicial"
+    nodo = problem.getStartState()
 
-    i=0
+    if problem.isGoalState(nodo):
+        listaCerrados.append(nodo)
+        return None
+
+    for i in problem.getSuccessors(nodo):
+        listaAbiertos.push(i)
+    
+    "Sucesores"
     while 1:
         if listaAbiertos.isEmpty():
             return False
 
         nodo = listaAbiertos.pop()
-        print (nodo)
         
-        if problem.isGoalState(nodo):
-            listaCerrados.append(nodo)
+        if problem.isGoalState(nodo[0]):
+            listaCerrados.append(nodo[0])
             return camino
             
-        if nodo not in listaCerrados:
-            listaCerrados.append(nodo)
-            print ("DIRECCION: ")
-            print(nodo)
-            print("YA ESTA")
-            if i==1:
-                camino.append(nodo[1])
-            print("aqui el camino")
-            print (camino)
-            listaAbiertos.push(problem.getSuccessors(problem.getStartState()))
-            "listaAbiertos.push(problem.getSuccessors(nodo))"
-        i=1
+        if nodo[0] not in listaCerrados:
+            listaCerrados.append(nodo[0])
+
+            camino.append(nodo[1])
+            print(nodo[0])
+            
+            for i in problem.getSuccessors(nodo[0]):
+                listaAbiertos.push(i)
+                
+
+                
         
     "util.raiseNotDefined()"
     
