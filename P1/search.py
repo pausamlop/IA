@@ -94,9 +94,9 @@ def depthFirstSearch(problem):
 
     "Nodo inicial"
     nodo = problem.getStartState()
+    listaCerrados.append(nodo)
 
     if problem.isGoalState(nodo):
-        listaCerrados.append(nodo)
         return None
 
     for i in problem.getSuccessors(nodo):
@@ -108,20 +108,25 @@ def depthFirstSearch(problem):
             return False
 
         nodo = listaAbiertos.pop()
+        print("pop:")
+        print(nodo)
+        
         
         if problem.isGoalState(nodo[0]):
             listaCerrados.append(nodo[0])
+            for i in camino:
+                print(i)
             return camino
             
         if nodo[0] not in listaCerrados:
             listaCerrados.append(nodo[0])
 
             camino.append(nodo[1])
-            print(nodo[0])
             
             for i in problem.getSuccessors(nodo[0]):
                 listaAbiertos.push(i)
-                
+                print("push:")
+                print(i)
 
                 
         
