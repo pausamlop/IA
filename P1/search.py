@@ -80,12 +80,12 @@ def generalSearch(listaAbiertos, problem):
     search algorithms
     """
 
-    "declaracion de variables"
+    # declaracion de variables
     listaCerrados = []
     camino = []
     parents = dict()
 
-    "Nodo inicial"
+    # Nodo inicial
     nodo = problem.getStartState()
     listaCerrados.append(nodo)
 
@@ -95,26 +95,25 @@ def generalSearch(listaAbiertos, problem):
     for i in problem.getSuccessors(nodo):
         listaAbiertos.push(i)
     
-
-    "Sucesores"
+    # Sucesores
     while 1:
 
-        "si la lista de abiertos esta vacia"
+        # si la lista de abiertos esta vacia
         if listaAbiertos.isEmpty():
             return False
 
         nodo = listaAbiertos.pop()
         
-        "si el nodo es el estado objetivo"
+        # si el nodo es el estado objetivo
         if problem.isGoalState(nodo[0]):
             listaCerrados.append(nodo[0])
             break
             
-        "si el nodo no esta en la lista de cerrados"
+        # si el nodo no esta en la lista de cerrados
         if nodo[0] not in listaCerrados:
             listaCerrados.append(nodo[0])
             
-            "obtener los sucesores del nodo y meterlos en la lista de abiertos y en el diccionario"
+            # obtener los sucesores del nodo y meterlos en la lista de abiertos y en el diccionario
             for i in problem.getSuccessors(nodo[0]):
                 if i not in parents.keys() and i[0] not in listaCerrados:
                     parents[i] = nodo
@@ -162,10 +161,59 @@ def breadthFirstSearch(problem):
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    listaAbiertos = util.PriorityQueueWithFunction(problem.getCostOfActions)
-    return generalSearch(listaAbiertos, problem)
+    "listaAbiertos = util.PriorityQueueWithFunction(problem.getCostOfActions)"
+    "return generalSearch(listaAbiertos, problem)"
 
-    
+   # declaracion de variables
+    listaAbiertos = util.PriorityQueue()
+    listaCerrados = []
+    path = dict()
+    actions = []
+
+    # Nodo inicial
+    nodo = problem.getStartState()
+    listaCerrados.append(nodo)
+
+    if problem.isGoalState(nodo):
+        return None
+
+    for i in problem.getSuccessors(nodo):
+        path[i] = [i[1]].copy()
+        listaAbiertos.push(i, problem.getCostOfActions(path[i]))
+
+    # Sucesores
+    while 1:
+
+        # si la lista de abiertos esta vacia
+        if listaAbiertos.isEmpty():
+            return False
+
+        nodo = listaAbiertos.pop()
+        
+        # si el nodo es el estado objetivo
+        if problem.isGoalState(nodo[0]):
+            listaCerrados.append(nodo[0])
+            break
+            
+        # si el nodo no esta en la lista de cerrados
+        if nodo[0] not in listaCerrados:
+            listaCerrados.append(nodo[0])
+            
+            # obtener los sucesores del nodo y meterlos en la lista de abiertos y en el diccionario
+            for i in problem.getSuccessors(nodo[0]):
+
+                actions.clear()
+                actions = path[nodo].copy()
+                actions.append(i[1])
+
+                if i not in path.keys() or problem.getCostOfActions(actions) < problem.getCostOfActions(path[i]):
+                    path[i] = actions.copy()
+
+                listaAbiertos.update(i, problem.getCostOfActions(path[i]))
+
+    return path[nodo]
+
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -174,10 +222,10 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
-def aStarSearch(problem, heuristic=nullHeuristic):
+def aStarSearch(problem, heuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    listaAbiertos = util.PriorityQueueWithFunction(heuristic)
+    return generalSearch(listaAbiertos, problem)
 
 
 # Abbreviations
