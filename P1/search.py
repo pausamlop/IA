@@ -74,36 +74,16 @@ def tinyMazeSearch(problem):
 
 
 
-"def generalSearch(listaAbiertos, problem)"
-
-
-
-
-
-
-
-
-def depthFirstSearch(problem):
+def generalSearch(listaAbiertos, problem):
     """
-    Search the deepest nodes in the search tree first.
-
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
-
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
-"""
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    
+    General auxiliar search function which helps solving problems with concrete 
+    search algorithms
+    """
 
     "declaracion de variables"
-    listaAbiertos = util.Stack()
     listaCerrados = []
     camino = []
     parents = dict()
-
 
     "Nodo inicial"
     nodo = problem.getStartState()
@@ -147,25 +127,45 @@ def depthFirstSearch(problem):
 
     camino.append(nodo[1])
     camino.reverse()
-    print (camino)
 
     return camino
 
-    
-    
-    
+
+
+
+def depthFirstSearch(problem):
+    """
+    Search the deepest nodes in the search tree first.
+
+    Your search algorithm needs to return a list of actions that reaches the
+    goal. Make sure to implement a graph search algorithm.
+
+    To get started, you might want to try some of these simple commands to
+    understand the search problem that is being passed in:
+
+    print("Start:", problem.getStartState())
+    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    """
+
+    listaAbiertos = util.Stack()
+    return generalSearch(listaAbiertos, problem)
     
   
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    listaAbiertos = util.Queue()
+    return generalSearch(listaAbiertos, problem)
+
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    listaAbiertos = util.PriorityQueueWithFunction(problem.getCostOfActions)
+    return generalSearch(listaAbiertos, problem)
+
+    
 
 def nullHeuristic(state, problem=None):
     """
