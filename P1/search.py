@@ -72,6 +72,17 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
+
+
+"def generalSearch(listaAbiertos, problem)"
+
+
+
+
+
+
+
+
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -86,11 +97,13 @@ def depthFirstSearch(problem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     
-    "*** YOUR CODE HERE ***"
-    
+
+    "declaracion de variables"
     listaAbiertos = util.Stack()
     listaCerrados = []
     camino = []
+    parents = dict()
+
 
     "Nodo inicial"
     nodo = problem.getStartState()
@@ -102,35 +115,42 @@ def depthFirstSearch(problem):
     for i in problem.getSuccessors(nodo):
         listaAbiertos.push(i)
     
+
     "Sucesores"
     while 1:
+
+        "si la lista de abiertos esta vacia"
         if listaAbiertos.isEmpty():
             return False
 
         nodo = listaAbiertos.pop()
-        print("pop:")
-        print(nodo)
         
-        
+        "si el nodo es el estado objetivo"
         if problem.isGoalState(nodo[0]):
             listaCerrados.append(nodo[0])
-            for i in camino:
-                print(i)
-            return camino
+            break
             
+        "si el nodo no esta en la lista de cerrados"
         if nodo[0] not in listaCerrados:
             listaCerrados.append(nodo[0])
-
-            camino.append(nodo[1])
             
+            "obtener los sucesores del nodo y meterlos en la lista de abiertos y en el diccionario"
             for i in problem.getSuccessors(nodo[0]):
+                if i not in parents.keys() and i[0] not in listaCerrados:
+                    parents[i] = nodo
                 listaAbiertos.push(i)
-                print("push:")
-                print(i)
 
-                
-        
-    "util.raiseNotDefined()"
+
+    while nodo in parents.keys():
+        camino.append(nodo[1])
+        nodo = parents[nodo]
+
+    camino.append(nodo[1])
+    camino.reverse()
+    print (camino)
+
+    return camino
+
     
     
     
