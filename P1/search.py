@@ -19,6 +19,16 @@ Pacman agents (in searchAgents.py).
 
 import util
 
+from enum import Enum
+class Algoritmo(Enum):
+    bfs = 0
+    dfs = 1
+    astar = 2
+    ucs = 3
+
+algoritmoElegido = 0
+
+
 class SearchProblem:
     """
     This class outlines the structure of a search problem, but doesn't implement
@@ -73,103 +83,24 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 
+def nullHeuristic(state, problem=None):
+    """
+    A heuristic function estimates the cost from the current state to the nearest
+    goal in the provided SearchProblem.  This heuristic is trivial.
+    """
+    return None
 
-def generalSearch(listaAbiertos, problem):
+
+def generalSearch(listaAbiertos, problem, heuristic=nullHeuristic):
     """
     General auxiliar search function which helps solving problems with concrete 
     search algorithms
     """
-
     # declaracion de variables
     listaCerrados = []
-    camino = []
-    parents = dict()
-
-    # Nodo inicial
-    nodo = problem.getStartState()
-    listaCerrados.append(nodo)
-
-    if problem.isGoalState(nodo):
-        return None
-
-    for i in problem.getSuccessors(nodo):
-        listaAbiertos.push(i)
-    
-    # Sucesores
-    while 1:
-
-        # si la lista de abiertos esta vacia
-        if listaAbiertos.isEmpty():
-            return False
-
-        nodo = listaAbiertos.pop()
-        
-        # si el nodo es el estado objetivo
-        if problem.isGoalState(nodo[0]):
-            listaCerrados.append(nodo[0])
-            break
-            
-        # si el nodo no esta en la lista de cerrados
-        if nodo[0] not in listaCerrados:
-            listaCerrados.append(nodo[0])
-            
-            # obtener los sucesores del nodo y meterlos en la lista de abiertos y en el diccionario
-            for i in problem.getSuccessors(nodo[0]):
-                if i not in parents.keys() and i[0] not in listaCerrados:
-                    parents[i] = nodo
-                listaAbiertos.push(i)
-
-
-    while nodo in parents.keys():
-        camino.append(nodo[1])
-        nodo = parents[nodo]
-
-    camino.append(nodo[1])
-    camino.reverse()
-
-    return camino
-
-
-
-
-def depthFirstSearch(problem):
-    """
-    Search the deepest nodes in the search tree first.
-
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
-
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
-
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    """
-
-    listaAbiertos = util.Stack()
-    return generalSearch(listaAbiertos, problem)
-    
-  
-
-def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
-
-    listaAbiertos = util.Queue()
-    return generalSearch(listaAbiertos, problem)
-
-
-def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
-    "listaAbiertos = util.PriorityQueueWithFunction(problem.getCostOfActions)"
-    "return generalSearch(listaAbiertos, problem)"
-
-   # declaracion de variables
-    listaAbiertos = util.PriorityQueue()
-    listaCerrados = []
-    path = dict()
     actions = []
-
+    path = dict()
+    
     # Nodo inicial
     nodo = problem.getStartState()
     listaCerrados.append(nodo)
@@ -179,7 +110,18 @@ def uniformCostSearch(problem):
 
     for i in problem.getSuccessors(nodo):
         path[i] = [i[1]].copy()
-        listaAbiertos.push(i, problem.getCostOfActions(path[i]))
+
+        if algoritmoElegido == Algoritmo.ucs:
+            listaAbiertos.push(i, problem.getCostOfActions(path[i]))
+
+        elif algoritmoElegido == Algoritmo.astar: 
+            if heuristic(i[0], problem) == None:
+                listaAbiertos.update(i, problem.getCostOfActions(path[i]))
+            else:
+                listaAbiertos.update(i, problem.getCostOfActions(path[i]) + heuristic(i[0], problem))
+
+        else:
+            listaAbiertos.push(i)
 
     # Sucesores
     while 1:
@@ -209,23 +151,68 @@ def uniformCostSearch(problem):
                 if i not in path.keys() or problem.getCostOfActions(actions) < problem.getCostOfActions(path[i]):
                     path[i] = actions.copy()
 
-                listaAbiertos.update(i, problem.getCostOfActions(path[i]))
+                if algoritmoElegido == Algoritmo.ucs:
+                    listaAbiertos.push(i, problem.getCostOfActions(path[i]))
+
+                elif algoritmoElegido == Algoritmo.astar: 
+                    if heuristic(i[0], problem) == None:
+                        listaAbiertos.update(i, problem.getCostOfActions(path[i]))
+                    else:
+                        listaAbiertos.update(i, problem.getCostOfActions(path[i]) + heuristic(i[0], problem))
+
+                else:
+                    listaAbiertos.push(i)
 
     return path[nodo]
 
 
 
-def nullHeuristic(state, problem=None):
+def depthFirstSearch(problem):
     """
-    A heuristic function estimates the cost from the current state to the nearest
-    goal in the provided SearchProblem.  This heuristic is trivial.
-    """
-    return 0
+    Search the deepest nodes in the search tree first.
 
-def aStarSearch(problem, heuristic):
-    """Search the node that has the lowest combined cost and heuristic first."""
-    listaAbiertos = util.PriorityQueueWithFunction(heuristic)
+    Your search algorithm needs to return a list of actions that reaches the
+    goal. Make sure to implement a graph search algorithm.
+
+    To get started, you might want to try some of these simple commands to
+    understand the search problem that is being passed in:
+
+    print("Start:", problem.getStartState())
+    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    """
+
+    listaAbiertos = util.Stack()
     return generalSearch(listaAbiertos, problem)
+    
+  
+
+def breadthFirstSearch(problem):
+    """Search the shallowest nodes in the search tree first."""
+    global algoritmoElegido
+    algoritmoElegido = Algoritmo.bfs
+
+    listaAbiertos = util.Queue()
+    return generalSearch(listaAbiertos, problem)
+
+
+def uniformCostSearch(problem):
+    """Search the node of least total cost first."""
+    global algoritmoElegido
+    algoritmoElegido = Algoritmo.ucs
+
+    listaAbiertos = util.PriorityQueue()
+    return generalSearch(listaAbiertos, problem)
+    
+
+def aStarSearch(problem, heuristic=nullHeuristic):
+    """Search the node that has the lowest combined cost and heuristic first."""
+    
+    global algoritmoElegido
+    algoritmoElegido = Algoritmo.astar
+
+    listaAbiertos = util.PriorityQueue()
+    return generalSearch(listaAbiertos, problem, heuristic)
 
 
 # Abbreviations
