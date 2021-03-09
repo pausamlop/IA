@@ -189,6 +189,7 @@ def depthFirstSearch(problem):
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
+    """Search the shallowest nodes in the search tree first."""
     global algoritmoElegido
     algoritmoElegido = Algoritmo.bfs
 
