@@ -65,7 +65,7 @@ def create_match(player1: Player, player2: Player) -> TwoPlayerMatch:
         initial_player=initial_player,
     )
 
-    return TwoPlayerMatch(game_state, max_sec_per_move=5, gui=False)
+    return TwoPlayerMatch(game_state, max_sec_per_move=1000, gui=False)
 
 
 tour = Tournament(max_depth=3, init_match=create_match)

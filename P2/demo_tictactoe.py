@@ -47,7 +47,7 @@ player_minimax3_2 = Player(
 )
 
 player_random = Player(
-    name='IA (minimax, 3)',
+    name='Random',
     strategy=RandomStrategy(),
     delay=0,
 )

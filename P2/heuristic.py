@@ -80,18 +80,6 @@ def complex_evaluation_function(state: TwoPlayerGameState) -> float:
             raise ValueError('Player MAX not defined')
     else:
         successors = state.game.generate_successors(state)
-
-        # NOTE [ASG]: Remove commented code?
-        """
-        state_next = copy.deepcopy(state)
-        state_next.next_player = state_next.game.opponent(
-            state_next.next_player
-        )
-        successors_next = state.game.generate_successors(
-            state_next
-        )
-        return len(successors_next) - len(successors)
-        """
         # Minimize the number of your opponent moves (for MAX).
         score_difference = - len(successors)
         if state.is_player_max(state.player1):
