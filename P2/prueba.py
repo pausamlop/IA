@@ -30,7 +30,7 @@ class FirstHeuristic(StudentHeuristic):
       board = from_array_to_dictionary_board(aux)
 
     for aux in board.values():
-      if aux == state.next_player.label:
+      if aux == state.player1.label:
         puntos += 1
 
     valor = len(state.game.generate_successors(state))
