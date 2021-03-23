@@ -8,7 +8,7 @@ Authors:
 from __future__ import annotations  # For Python 3.7
 
 import numpy as np
-from prueba import FirstHeuristic, Solution1, Solution2
+from prueba import FantasticHeuristic, Solution1, Solution2
 from game import Player, TwoPlayerGameState, TwoPlayerMatch
 from heuristic import simple_evaluation_function
 from tictactoe import TicTacToe
@@ -70,7 +70,7 @@ def create_match(player1: Player, player2: Player) -> TwoPlayerMatch:
 
 
 tour = Tournament(max_depth=3, init_match=create_match)
-strats = {'opt1': [Heuristic1], 'opt2': [Heuristic2], 'opt3': [Heuristic3], 'opt4': [FirstHeuristic]}
+strats = {'opt1': [Heuristic1], 'opt2': [Heuristic2], 'opt3': [Heuristic3], 'opt4': [FantasticHeuristic]}
 
 n = 5
 scores, totals, names = tour.run(

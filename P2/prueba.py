@@ -14,11 +14,11 @@ from reversi import (
 
 
 
-class FirstHeuristic(StudentHeuristic):
+class FantasticHeuristic(StudentHeuristic):
   
   # devuelve el nombre de la heuristica
   def get_name(self) -> str:
-    return "FirstHeuristic"
+    return "FantasticHeuristic"
 
   # funcion de evaluacion
   def evaluation_function (self, state: TwoPlayerGameState) -> float:
