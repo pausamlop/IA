@@ -125,7 +125,7 @@ game_state = TwoPlayerGameState(
 match = TwoPlayerMatch(
     game_state,
     max_sec_per_move=1000,
-    gui=True,
+    gui=False,
 )
 
 # Play match
