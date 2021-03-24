@@ -39,19 +39,39 @@ class FantasticHeuristic(StudentHeuristic):
       return 2*(puntos - valor)
 
     return 2*(puntos + valor)
+
+  
     
+#Devuelve el numero de esquinas por conquistar
+class DestroyerHuristic(StudentHeuristic):
 
-# class destroyerHuristic(StudenHeuristic):
-#   def get_name(self) -> str:
-#     return "destryerheuristic"
+  def get_name(self) -> str:
+    return "DestroyerHeuristic"
 
-#   def evaluation_function(self, state: TwoPlayerGameState) -> float:
-#     # let's use an auxiliary function
-#     aux = self.dummy(123)
-#     return aux
+  def evaluation_function(self, state: TwoPlayerGameState) -> float:
+    black_corner_ini = 4
+    white_corner_ini = 4
+    corner = [(1, 1),(1, 8), (8, 1), (8,8)]
 
-#   def dummy(self, n: int) -> int:
-#     return n + 1
+    black_corner = black_corner_ini - corner.count(state.player1.label)
+    white_corner = white_corner_ini - corner.count(state.player2.label)
+
+
+    siguiente_estado = state.game.generate_successors(state)
+
+    aux_black = siguiente_estado.count(state.player1.label)
+    aux_white = siguiente_estado.count(state.player2.label)
+    
+    black_corner_next_state = black_corner - aux_black
+    white_corner_next_state = white_corner - aux_white
+
+    if (state.is_player_max(state.next_player)==False) and (black_corner_next_state < black_corner):
+      return black_corner_next_state
+
+    if state.is_player_max(state.next_player) and (white_corner_next_state < white_corner):
+      return white_corner_next_state
+
+    return 4
 
 
 
