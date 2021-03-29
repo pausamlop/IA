@@ -8,7 +8,7 @@ Authors:
 from __future__ import annotations  # For Python 3.7
 
 import numpy as np
-from prueba import DestroyerHuristic, FantasticHeuristic, NastyHeuristic, Solution1, Solution2, BombasticHeuristic
+from prueba import FusionHeuristic, EgoHeuristic, DestroyerHuristic, FantasticHeuristic, NastyHeuristic, Solution1, Solution2, BombasticHeuristic
 from game import Player, TwoPlayerGameState, TwoPlayerMatch
 from heuristic import simple_evaluation_function
 from tictactoe import TicTacToe
@@ -74,8 +74,8 @@ def create_match(player1: Player, player2: Player) -> TwoPlayerMatch:
         initial_board = from_array_to_dictionary_board(initial_board)
     except ValueError:
         raise ValueError('Wrong configuration of the board')
-    else:
-        print("Successfully initialised board from array")
+    #else:
+        #print("Successfully initialised board from array")
 
 
     
@@ -97,7 +97,8 @@ def create_match(player1: Player, player2: Player) -> TwoPlayerMatch:
 
 
 tour = Tournament(max_depth=3, init_match=create_match)
-strats = {'opt1': [Heuristic1], 'opt2': [Heuristic2], 'opt3': [Heuristic3], 'opt4': [BombasticHeuristic]}
+strats = {'opt1': [Heuristic3], 'opt2': [FantasticHeuristic], 'opt3': [EgoHeuristic], 'opt4': [FusionHeuristic]}
+
 
 n = 5
 scores, totals, names = tour.run(
