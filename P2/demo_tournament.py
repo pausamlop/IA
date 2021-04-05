@@ -100,7 +100,7 @@ strats = {'opt1': [Heuristic3], 'opt2': [FantasticHeuristic], 'opt3': [EgoHeuris
 
 
 n = 5
-start = time.time()
+#start = time.time()
 scores, totals, names = tour.run(
     student_strategies=strats,
     increasing_depth=False,

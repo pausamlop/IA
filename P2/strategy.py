@@ -206,6 +206,8 @@ class MinimaxAlphaBetaStrategy(Strategy):
         # inicializar el nodo raiz 
         successors = self.generate_successors(state)
         minimax_value = -np.inf
+        alpha = -np.inf
+        beta = np.inf
 
         # recorrer sucesores
         for successor in successors:
@@ -218,14 +220,15 @@ class MinimaxAlphaBetaStrategy(Strategy):
             successor_minimax_value = self._min_value(
                 successor,
                 self.max_depth_minimax,
-                -np.inf,
-                np.inf
+                alpha,
+                beta
             )
 
             # maximizar ese valor
             if (successor_minimax_value > minimax_value):
                 minimax_value = successor_minimax_value
                 next_state = successor
+                alpha = successor_minimax_value
 
         # verbose
         if self.verbose > 0:
