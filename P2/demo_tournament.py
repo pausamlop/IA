@@ -11,14 +11,15 @@ import numpy as np
 import timeit
 
 
-from prueba import FusionHeuristic, EgoHeuristic, FantasticHeuristic
+
 from game import Player, TwoPlayerGameState, TwoPlayerMatch
 from heuristic import simple_evaluation_function
 from tictactoe import TicTacToe
 from tournament import StudentHeuristic, Tournament
 from reversi import Reversi, from_array_to_dictionary_board, from_dictionary_to_array_board
+import strategy
 
-
+import studentheuristics
 
 
 class Heuristic1(StudentHeuristic):
@@ -95,17 +96,18 @@ def create_match(player1: Player, player2: Player) -> TwoPlayerMatch:
     return TwoPlayerMatch(game_state, max_sec_per_move=1000, gui=False)
 
 
-tour = Tournament(max_depth=3, init_match=create_match)
-strats = {'opt1': [Heuristic3], 'opt2': [FantasticHeuristic], 'opt3': [EgoHeuristic], 'opt4': [FusionHeuristic]}
+tour = Tournament(max_depth=4, init_match=create_match)
+# strats = {'opt1': [Heuristic1], 'opt2': [FusionHeuristic]}
+strats = tour.load_strategies_from_folder(folder="studentheuristics", max_strat=3)
 
 
 n = 5
-#start = time.time()
+
 scores, totals, names = tour.run(
     student_strategies=strats,
     increasing_depth=False,
     n_pairs=n,
-    allow_selfmatch=False,
+    allow_selfmatch=True,
 )
 
 print(
@@ -128,3 +130,5 @@ for name1 in names:
         else:
             print('\t%d' % (scores[name1][name2]), end='')
     print()
+
+print (strategy.print_values())

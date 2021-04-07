@@ -4,6 +4,10 @@
         Fabiano Baroni <fabiano.baroni@uam.es>,
         Alejandro Bellogin <alejandro.bellogin@uam.es>
         Alberto Suárez <alberto.suarez@uam.es>
+
+        MinimaxAlphaBetaStrategy:
+        Elena Cano <elena.canoc@estudiante.uam.es>
+        Paula Samper <paula.samper@estudiante.uam.es>
 """
 
 from __future__ import annotations  # For Python 3.7
@@ -16,6 +20,15 @@ import numpy as np
 from game import TwoPlayerGame, TwoPlayerGameState
 from heuristic import Heuristic
 
+max_entries = 0
+min_entries = 0
+move_entries = 0
+
+def print_values():
+    global move_entries
+    global max_entries
+    global min_entries
+    return (move_entries, max_entries, min_entries)
 
 class Strategy(ABC):
     """Abstract base class for player's strategy."""
@@ -102,6 +115,10 @@ class MinimaxStrategy(Strategy):
     ) -> TwoPlayerGameState:
         """Compute next state in the game."""
 
+        # contador global del numero de accesos
+        global move_entries
+        move_entries += 1
+
         successors = self.generate_successors(state)
 
         minimax_value = -np.inf
@@ -133,6 +150,11 @@ class MinimaxStrategy(Strategy):
         depth: int,
     ) -> float:
         """Min step of the minimax algorithm."""
+
+        # contador global del numero de accesos
+        global min_entries
+        min_entries += 1
+
         if state.end_of_game or depth == 0:
             minimax_value = self.heuristic.evaluate(state)
 
@@ -160,6 +182,11 @@ class MinimaxStrategy(Strategy):
         depth: int,
     ) -> float:
         """Max step of the minimax algorithm."""
+
+        # contador global del numero de accesos
+        global max_entries
+        max_entries += 1
+
         if state.end_of_game or depth == 0:
             minimax_value = self.heuristic.evaluate(state)
 
@@ -202,6 +229,10 @@ class MinimaxAlphaBetaStrategy(Strategy):
         gui: bool = False,
     ) -> TwoPlayerGameState:
         """Compute next state in the game."""
+
+        # contador global del numero de accesos
+        global move_entries
+        move_entries += 1
 
         # inicializar el nodo raiz 
         successors = self.generate_successors(state)
@@ -249,7 +280,11 @@ class MinimaxAlphaBetaStrategy(Strategy):
         beta: int,
     ) -> float:
         """Min step of the minimax algorithm."""
- 
+
+        # contador global del numero de accesos
+        global min_entries
+        min_entries += 1
+
         # estado final o profundidad maxima -> devolver funcion de evaluacion
         if state.end_of_game or depth == 0:
             minimax_value = self.heuristic.evaluate(state)
@@ -297,6 +332,10 @@ class MinimaxAlphaBetaStrategy(Strategy):
     ) -> float:
         """Max step of the minimax algorithm."""
 
+        # contador global del numero de accesos
+        global max_entries
+        max_entries += 1
+        
         # estado final o profundidad maxima -> devolver funcion de evaluacion
         if state.end_of_game or depth == 0:
             minimax_value = self.heuristic.evaluate(state)
@@ -333,4 +372,7 @@ class MinimaxAlphaBetaStrategy(Strategy):
             print('{}: {}'.format(state.board, minimax_value))
 
         return minimax_value
+
+
+
 

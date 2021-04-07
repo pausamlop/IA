@@ -1,8 +1,8 @@
-"""Illustration of tournament.
+"""Mide el tiempo de ejecucion de un demo_tournament.
 
 Authors:
-    Alejandro Bellogin <alejandro.bellogin@uam.es>
-
+    Elena Cano <elena.canoc@estudiante.uam.es>
+    Paula Samper <paula.samper@estudiante.uam.es>
 """
 
 from __future__ import annotations  # For Python 3.7
@@ -41,6 +41,19 @@ class Heuristic3(StudentHeuristic):
 
     def evaluation_function(self, state: TwoPlayerGameState) -> float:
         return simple_evaluation_function(state)
+
+class Heuristic1(StudentHeuristic):
+
+    def get_name(self) -> str:
+        return "dummy"
+
+    def evaluation_function(self, state: TwoPlayerGameState) -> float:
+        # Use an auxiliary function.
+        return self.dummy(123)
+
+    def dummy(self, n: int) -> int:
+        return n + 4
+
 
 
 def create_match(player1: Player, player2: Player) -> TwoPlayerMatch:
@@ -86,13 +99,13 @@ def create_match(player1: Player, player2: Player) -> TwoPlayerMatch:
     return TwoPlayerMatch(game_state, max_sec_per_move=1000, gui=False)
 
 tour = Tournament(max_depth=3, init_match=create_match)
-strats = {'opt1': [Heuristic3], 'opt2': [FantasticHeuristic], 'opt3': [EgoHeuristic], 'opt4': [FusionHeuristic]}
+strats = {'opt1': [Fusion1]}
 n = 5
 scores, totals, names = tour.run(
     student_strategies=strats,
     increasing_depth=False,
     n_pairs=n,
-    allow_selfmatch=False,
+    allow_selfmatch=True,
 )
 '''
 
