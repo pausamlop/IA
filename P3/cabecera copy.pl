@@ -14,17 +14,20 @@ write_log(S) :- open('error_logs.txt', append, Out), write(Out, S), write(Out, '
 
 % RECORRER LA LISTA
 % base - la suma de una lista vacia es 0
-lista1([],[], 0).
+lista([],0).
 % recursion
-lista1([X|A], [Y|B], Resultado) :- lista1(A, B, K), C is X*Y, power(C,Potencia, Pot), Resultado is Pot+K.
+lista([X|Y], Z) :- prod(Y, K), Z is power(X*Y,Potencia).
+
 
 % POTENCIA
-% base - cuando un numero esta elevado a 0 el resultado es 1
-power(Base, 0, 1).
+% base - cuando un numero esta elevado a 1 el resultado es el mismo numero
+power(X,1,X).
 % recursion
-power(Base, P1, R1) :- P1>0, P2 is P1-1, power(Base, P2, R2), R1 is R2*Base.
+power(X,Potencia,Resultado) :- P2 is Potencia-1, Resultado is R2*X, power(X,P2, R2).
 
-sum_pot_prod([X1|A1], [Y1|B1], Potencia, Resultado) :- lista1([X1|A1], [Y1|B1], Resultado).
+
+
+sum_pot_prod(X, Y, Potencia, Resultado) :- power(X,Potencia,Resultado).
 %print(X).)
 
 
