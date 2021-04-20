@@ -12,20 +12,27 @@ write_log(S) :- open('error_logs.txt', append, Out), write(Out, S), write(Out, '
 *
 ****************/
 
+% SUM POT PROD
+% true
+sum_pot_prod(X, Y, Potencia, Resultado):- sumatorio(X, Y, Potencia, Resultado).
+% false - potencia negativa
+sum_pot_prod(X, Y, Potencia, Resultado):- Potencia < 0, write_log('ERROR 1.1 Potencia.'), !, fail.
+% false - longitud distinta
+sum_pot_prod(X, Y, Potencia, Resultado):- Potencia > -1, write_log('ERROR 1.2 Longitud.'), !, fail.
+
+
 % RECORRER LA LISTA
 % base - la suma de una lista vacia es 0
-lista1([],[], 0).
+sumatorio([],[], P1, 0).
 % recursion
-lista1([X|A], [Y|B], Resultado) :- lista1(A, B, K), C is X*Y, power(C,Potencia, Pot), Resultado is Pot+K.
+sumatorio([X1|A1], [Y1|B1], P1, R1) :- sumatorio(A1, B1, P1, K1), power(X1*Y1, P1, Pot), R1 is Pot+K1.
 
 % POTENCIA
 % base - cuando un numero esta elevado a 0 el resultado es 1
 power(Base, 0, 1).
 % recursion
-power(Base, P1, R1) :- P1>0, P2 is P1-1, power(Base, P2, R2), R1 is R2*Base.
+power(Base, Exp, R1) :- Exp > 0, NewExp is Exp-1, power(Base, NewExp, R2), R1 is R2*Base.
 
-sum_pot_prod([X1|A1], [Y1|B1], Potencia, Resultado) :- lista1([X1|A1], [Y1|B1], Resultado).
-%print(X).)
 
 
 
@@ -39,7 +46,27 @@ sum_pot_prod([X1|A1], [Y1|B1], Potencia, Resultado) :- lista1([X1|A1], [Y1|B1], 
 *		Y : Numero de valor real. Penultimo elemento.
 *
 ****************/
-segundo_penultimo(L, X, Y) :- print('Error. Este ejercicio no esta implementado todavia.'), !, fail.
+
+% SEGUNDO_PENULTIMO
+% true
+segundo_penultimo(L,X,Y):- penultimo(L,Y), segundo(L,X).
+% false - error de longitud
+segundo_penultimo(L,X,Y):- write_log('ERROR 2.1 Longitud'), !, fail.
+
+
+% PENULTIMO ELEMENTO
+% base - el primer elemento de una lista de dos elementos es el penultimo
+penultimo([PenUlt,_],PenUlt).
+% recursion
+penultimo([A2|B2],PenUlt) :- penultimo(B2,PenUlt).
+
+% SEGUNDO ELEMENTO
+segundo([First,Second|_],Second).
+
+
+
+
+
 
 /***************
 * EJERCICIO 3. sublista/5
@@ -68,6 +95,8 @@ sublista(L, Menor, Mayor, E, Sublista) :- print('Error. Este ejercicio no esta i
 ****************/
 espacio_lineal(Menor, Mayor, Numero_elementos, Rejilla) :- print('Error. Este ejercicio no esta implementado todavia.'), !, fail.
 
+
+
 /***************
 * EJERCICIO 5. normalizar/2
 *
@@ -77,7 +106,28 @@ espacio_lineal(Menor, Mayor, Numero_elementos, Rejilla) :- print('Error. Este ej
 *		Distribucion: Vector de numeros reales de salida. Distribucion normalizada.
 *
 ****************/
-normalizar(Distribucion_sin_normalizar, Distribucion) :- print('Error. Este ejercicio no esta implementado todavia.'), !, fail.
+
+% NORMALIZAR
+normalizar(Distribucion_sin_normalizar, Distribucion) :- z(Distribucion_sin_normalizar, Cte), recorrer(Distribucion_sin_normalizar, Distribucion, Cte).
+
+
+% CONSTANTE DE NORMALIZACION
+% base - la suma de una lista vacia es 0
+z([],0).
+% recursion
+z([A5|B5], Z5) :- z(B5, OldZ), Z5 is OldZ+A5. 
+
+% NORMALIZAR LA DISTRIBUCION
+% base - la lista vacia esta normalizada
+recorrer([],[],Div).
+% recursion
+recorrer([E5|F5], [C5|D5], Div) :- E5 > -1, C5 is E5/Div, recorrer(F5,D5, Div).
+recorrer([E5|F5], [C5|D5], Div) :- E5 < 0, write_log('ERROR 5.1. Negativos.'), !, fail.
+
+
+
+
+
 
 /***************
 * EJERCICIO 6. divergencia_kl/3
