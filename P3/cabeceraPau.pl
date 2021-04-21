@@ -80,22 +80,7 @@ segundo([First,Second|_],Second).
 *		Sublista: Sublista de salida de cadenas de texto.
 *
 ****************/
-
-
-%Calculamos la sublista
-%base
-calcula_sublista([X|_],1,1,E,[X]).
-%recursion
-calcula_sublista([X|Xs],1,K,E,[X|Ys]) :- K>1, K1 is K-1, calcula_sublista(Xs,1, K1,E,Ys).
-calcula_sublista([_|Xs],I,K,E,Ys)     :- I>1, I1 is I-1, K1 is K-1, calcula_sublista(Xs, I1, K1,E,Ys).
-
-%Comprobamos  que el elemento este en la sublista calculada
-check(E, Ys) :- not(member(E,Ys)), write_log('ERROR 3.1 Elemento').
-
-%sublista(L,Menor, Mayor, E, Sublista).
-sublista(L,Menor, Mayor, E, Sublista) :- Mayor<Menor, write_log('ERROR 3.2 Indices.'), !, fail.
-sublista(L,Menor, Mayor, E, Sublista) :- calcula_sublista(L,Menor, Mayor, E, Sublista), not(check(E, Sublista)).
-
+sublista(L, Menor, Mayor, E, Sublista) :- print('Error. Este ejercicio no esta implementado todavia.'), !, fail.
 
 /***************
 * EJERCICIO 4. espacio_lineal/4
@@ -108,19 +93,7 @@ sublista(L,Menor, Mayor, E, Sublista) :- calcula_sublista(L,Menor, Mayor, E, Sub
 *               Rejilla: Vector de numeros de valor real resultante con la rejilla.
 *
 ****************/
-
-
-%espacio_lineal(Menor, Mayor, Numero_elementos, Rejilla)
-
-%Calculo del espacio lineal
-%base
-calcula_espacio_lineal(_,Menor,Numero_elementos,[Menor],Numero_elementos).
-%recursion
-calcula_espacio_lineal(Menor,Mayor,Numero_elementos,[Menor|Rejilla],Paso) :- Paso<Numero_elementos, Paso2 is Paso+1, Max is Mayor*1.0, Min is Menor+(Mayor/(Numero_elementos-1)), calcula_espacio_lineal(Min,Max,Numero_elementos,Rejilla, Paso2).
-
-%ESPACIO LINEAL
-espacio_lineal(Menor, Mayor, Numero_elementos, Rejilla) :- Mayor<Menor, write_log('ERROR 4.1 Indices.'), !, fail.
-espacio_lineal(Menor, Mayor, Numero_elementos, Rejilla) :- calcula_espacio_lineal(Menor,Mayor,Numero_elementos,Rejilla,1).
+espacio_lineal(Menor, Mayor, Numero_elementos, Rejilla) :- print('Error. Este ejercicio no esta implementado todavia.'), !, fail.
 
 
 
@@ -166,20 +139,7 @@ recorrer([E5|F5], [C5|D5], Div) :- E5 < 0, write_log('ERROR 5.1. Negativos.'), !
 *		KL: Numero de valor real. Divergencia KL.
 *
 ****************/
-
-%Calculo de la divergencia
-%base
-divergencia_kl_calcula([],[],0).
-%recursion
-divergencia_kl_calcula([A6|B6], [C6|D6], KL) :- A6 > 0, C6 > 0, divergencia_kl_calcula(B6,D6, KL2), KL is KL2+(A6*log(A6/C6)).
-divergencia_kl_calcula([A6|B6], [C6|D6], KL) :- A6 =< 0, write_log('ERROR 6.1. Divergencia KL no definida.'), !, fail.
-divergencia_kl_calcula([A6|B6], [C6|D6], KL) :- C6 =< 0, A6>=0, write_log('ERROR 6.1. Divergencia KL no definida.'), !, fail.
-
-%DIVERGENCIA
-divergencia_kl(D1, D2, KL) :- divergencia_kl_calcula(D1,D2,KL).
-divergencia_kl(D1, D2, KL) :- not(normalizar(D1,D1)), write_log('ERROR 6.2. Divergencia KL definida solos para distribuciones'), !, fail.
-divergencia_kl(D1, D2, KL) :- not(normalizar(D2,D2)), write_log('ERROR 6.2. Divergencia KL definida solos para distribuciones'), !, fail.
-
+divergencia_kl(D1, D2, KL) :- print('Error. Este ejercicio no esta implementado todavia.'), !, fail.
 
 /***************
 * EJERCICIO 7. producto_kronecker/3
