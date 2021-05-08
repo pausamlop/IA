@@ -1,7 +1,0 @@
-ERROR 1.1 Potencia.
-ERROR 1.2 Longitud.
-ERROR 2.1 Longitud
-ERROR 3.1 Elemento
-ERROR 3.2 Indices.
-ERROR 4.1 Indices.
-ERROR 5.1. Negativos.
